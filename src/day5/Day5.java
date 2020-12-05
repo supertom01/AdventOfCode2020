@@ -111,15 +111,12 @@ public class Day5 {
         }
         Collections.sort(ids);
 
-        ArrayList<Integer> results = new ArrayList<>();
         for(int i = 1; i < ids.size() ; i++) {
             if(ids.get(i - 1) + 1 != ids.get(i)) {
-                results.add(ids.get(i - 1));
-                results.add(ids.get(i));
+                return (ids.get(i - 1) + ids.get(i)) / 2;
             }
         }
-
-        return (results.get(0) + results.get(1)) / 2;
+        return -1;
     }
 
     public static void main(String[] args) throws FileNotFoundException {

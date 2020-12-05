@@ -5,6 +5,7 @@ import util.Reader;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,12 +14,33 @@ import java.util.regex.Pattern;
  * You have to make sure that passports are valid.
  *
  * @author Tom Meulenkamp
- * @version v1.0
+ * @version v1.2
+ *
+ * v1.0 = Initial version
+ * v1.1 = Replaced switch case with regex
+ * v1.2 = Merged the part A and B functions into one function
  */
 public class Day4 {
 
-    private String[] input;
-    private final ArrayList<String> requiredFields = new ArrayList<String>(Arrays.asList("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"));
+    private final String[] input;
+
+    /**
+     * The required fields in the passports.
+     */
+    private final ArrayList<String> requiredFields = new ArrayList<>(Arrays.asList("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"));
+
+    /**
+     * A mapping from the passport field to the regex that checks if the value is valid.
+     */
+    private final HashMap<String, String> regexMapping = new HashMap<>() {{
+        put("byr", "(19[2-9][0-9])|(200[0-2])");
+        put("iyr", "(201[0-9])|2020");
+        put("eyr", "(202[0-9])|2030");
+        put("hgt", "(1[5-8][0-9]cm)|(19[0-3]cm)|(59in)|(6[0-9]in)|(7[0-6]in)");
+        put("hcl", "#[a-f0-9]{6}");
+        put("ecl", "amb|blu|brn|gry|grn|hzl|oth");
+        put("pid", "[0-9]{9}");
+    }};
 
     public Day4() throws FileNotFoundException {
         input = Reader.ReadString("C:/Users/meule/IdeaProjects/adventOfCode2020/src/day4/input.txt");
@@ -68,104 +90,45 @@ public class Day4 {
      * @return true if the passport is deemed valid
      */
     public boolean checkValidityPartB(String passport) {
-        if(!checkValidityPartA(passport)) {
-            return false;
-        }
         String[] pairs = passport.split(" ");
         for(String pair : pairs) {
             String key = pair.split(":")[0];
             String val = pair.split(":")[1];
 
-            switch (key) {
-                case "byr":
-                    // Year of birth should be between 1920 and 2002
-                    if(!((1920 <= Integer.parseInt(val)) && (Integer.parseInt(val) <= 2002))) {
-                        return false;
-                    }
-                    break;
-                case "iyr":
-                    // Year of issue should be between 2010 and 2020
-                    if(!((2010 <= Integer.parseInt(val)) && (Integer.parseInt(val) <= 2020))) {
-                        return false;
-                    }
-                    break;
-                case "eyr":
-                    // Year of expiry should be between 2020 and 2030
-                    if(!((2020 <= Integer.parseInt(val)) && (Integer.parseInt(val) <= 2030))) {
-                        return false;
-                    }
-                    break;
-                case "hgt":
-                    // Height should contains cm or in
-                    if(val.contains("cm") || val.contains("in")) {
-                        int length = Integer.parseInt(val.substring(0, val.length() - 2));
-                        // If cm then the person should be between 150 and 193 cm
-                        if(val.contains("cm") && !(150 <= length && length <= 193)) {
-                            return false;
-                        }
-                        // If in then the person should be between 59 and 76 in
-                        else if (val.contains("in") && !(59 <= length && length <= 76)) {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                    break;
-                case "hcl":
-                    // Make sure that the hair colour has a valid hex color code.
-                    Pattern p = Pattern.compile("#[a-f0-9]{6}");
-                    Matcher m = p.matcher(val);
-                    if(!m.matches()) {
-                        return false;
-                    }
-                    break;
-                case "ecl":
-                    // The eye color can only be amb, blu, brn, gry, grn, hzl or oth.
-                    if(!(val.equals("amb") || val.equals("blu") || val.equals("brn") ||
-                            val.equals("gry") || val.equals("grn") || val.equals("hzl") ||
-                            val.equals("oth"))) {
-                        return false;
-                    }
-                    break;
-                case "pid":
-                    // A person ID should contain only 9 integers.
-                    Pattern p1 = Pattern.compile("[0-9]{9}");
-                    Matcher m1 = p1.matcher(val);
-                    if(!m1.matches()) {
-                        return false;
-                    }
-                    break;
+            // We do not have to check the validity of cid.
+            if(!key.equals("cid")) {
+                Pattern p = Pattern.compile(regexMapping.get(key));
+                Matcher m = p.matcher(val);
+                if(!m.matches()) {
+                    return false;
+                }
             }
         }
         return true;
     }
 
-    public void part1() {
-        int count = 0;
+    /**
+     * Run the testing procedure for both part A and B
+     */
+    public void run() {
+        int countA = 0;
+        int countB = 0;
         String[] passports = createPassports();
         for(String passport : passports) {
             if(checkValidityPartA(passport)) {
-                count++;
+                countA++;
+                if(checkValidityPartB(passport)) {
+                    countB++;
+                }
             }
         }
-        System.out.println("Part A: " + count);
-    }
-
-    public void part2() {
-        int count = 0;
-        String[] passports = createPassports();
-        for(String passport : passports) {
-            if(checkValidityPartB(passport)) {
-                count++;
-            }
-        }
-        System.out.println("Part B: " + count);
+        System.out.println("Part A: " + countA);
+        System.out.println("Part B: " + countB);
     }
 
     public static void main(String[] args) throws FileNotFoundException {
         Day4 day4 = new Day4();
-        day4.part1();
-        day4.part2();
+        day4.run();
     }
 
 }
