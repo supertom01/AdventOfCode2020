@@ -51,18 +51,18 @@ public class Day4 {
      * @return Array with only properly formatted passports.
      */
     public String[] createPassports() {
-        String passport = "";
+        StringBuilder passport = new StringBuilder();
         ArrayList<String> passports = new ArrayList<>();
         for(String line : input) {
             if(line.equals("")) {
-                passports.add(passport);
-                passport = "";
+                passports.add(passport.toString());
+                passport = new StringBuilder();
             } else {
-                passport += line + " ";
+                passport.append(line).append(" ");
             }
         }
-        if(!passport.equals("")) {
-            passports.add(passport);
+        if(!passport.toString().equals("")) {
+            passports.add(passport.toString());
         }
         return passports.toArray(String[]::new);
     }
