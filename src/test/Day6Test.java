@@ -20,29 +20,29 @@ class Day6Test {
     }
 
     @Test
-    void gatherInputs() {
+    void organizeFormsA() {
         String[] expected = new String[]{"abc", "abc", "abac", "aaaa", "b"};
         Assertions.assertArrayEquals(expected, day6.organizeFormsA(testInput));
     }
 
     @Test
-    void readAnswers() {
+    void readAnswersA() {
         String[] forms = day6.organizeFormsA(testInput);
-        Assertions.assertEquals(3, day6.readAnswersA(forms[0]));
-        Assertions.assertEquals(3, day6.readAnswersA(forms[1]));
-        Assertions.assertEquals(3, day6.readAnswersA(forms[2]));
-        Assertions.assertEquals(1, day6.readAnswersA(forms[3]));
-        Assertions.assertEquals(1, day6.readAnswersA(forms[4]));
+        Assertions.assertEquals(3, day6.countAnswersA(forms[0]));
+        Assertions.assertEquals(3, day6.countAnswersA(forms[1]));
+        Assertions.assertEquals(3, day6.countAnswersA(forms[2]));
+        Assertions.assertEquals(1, day6.countAnswersA(forms[3]));
+        Assertions.assertEquals(1, day6.countAnswersA(forms[4]));
     }
 
     @Test
     void readAnswersB() {
         String[][] forms = day6.organizeFormsB(testInput);
-        Assertions.assertEquals(3, day6.readAnswersB(forms[0]));
-        Assertions.assertEquals(0, day6.readAnswersB(forms[1]));
-        Assertions.assertEquals(1, day6.readAnswersB(forms[2]));
-        Assertions.assertEquals(1, day6.readAnswersB(forms[3]));
-        Assertions.assertEquals(1, day6.readAnswersB(forms[4]));
+        Assertions.assertEquals(3, day6.countAnswersB(forms[0]));
+        Assertions.assertEquals(0, day6.countAnswersB(forms[1]));
+        Assertions.assertEquals(1, day6.countAnswersB(forms[2]));
+        Assertions.assertEquals(1, day6.countAnswersB(forms[3]));
+        Assertions.assertEquals(1, day6.countAnswersB(forms[4]));
     }
 
 }

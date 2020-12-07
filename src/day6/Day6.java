@@ -22,6 +22,10 @@ public class Day6 {
         this.input = Reader.ReadString("C:/Users/meule/IdeaProjects/adventOfCode2020/src/day6/input.txt");
     }
 
+    /*
+    PART A
+     */
+
     /**
      * Collect all the provided answers provided in the forms.
      * @param input Puzzle input
@@ -49,7 +53,7 @@ public class Day6 {
      * @param form the group form to check
      * @return the number of unique characters in a form
      */
-    public int readAnswersA(String form) {
+    public int countAnswersA(String form) {
         ArrayList<Character> answers = new ArrayList<>();
         for(char answer : form.toCharArray()) {
             if(!answers.contains(answer)) {
@@ -67,10 +71,14 @@ public class Day6 {
         String [] forms = organizeFormsA(input);
         int count = 0;
         for(String form : forms) {
-            count += readAnswersA(form);
+            count += countAnswersA(form);
         }
         return count;
     }
+
+    /*
+    PART B
+     */
 
     /**
      * Collect all the provided answers provided in the forms, do not merge answers within groups.
@@ -99,9 +107,9 @@ public class Day6 {
      * @param form the group form to check
      * @return the number of questions answered yes, by all people in the group.
      */
-    public int readAnswersB(String[] form) {
+    public int countAnswersB(String[] form) {
         if(form.length == 1) {
-            return readAnswersA(form[0]);
+            return countAnswersA(form[0]);
         }
         ArrayList<String> allAnswered = new ArrayList<>();
         for (String letter : this.alphabet) {
@@ -127,7 +135,7 @@ public class Day6 {
         String[][] forms = organizeFormsB(input);
         int count = 0;
         for(String[] form : forms) {
-            count += readAnswersB(form);
+            count += countAnswersB(form);
         }
         return count;
     }
