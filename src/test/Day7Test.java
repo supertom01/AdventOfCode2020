@@ -1,8 +1,6 @@
 package test;
 
 import day7.Day7;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Reader;
@@ -23,6 +21,7 @@ class Day7Test {
         input = Reader.ReadString("C:/Users/meule/IdeaProjects/adventOfCode2020/src/test/day7.txt");
         input2 = Reader.ReadString("C:/Users/meule/IdeaProjects/adventOfCode2020/src/test/day7_2.txt");
         day7 = new Day7();
+        day7.setBags(day7.createDataStructure(input));
     }
 
     @Test
@@ -43,17 +42,16 @@ class Day7Test {
         assertEquals(testMap, resultMap);
     }
 
-    // The methods bellow don't work anymore due to optimizations in the code
+    @Test
+    void nrOfBagsContainBag() {
+        assertEquals(4, day7.nrOfBagsContainBag("shiny gold"));
+    }
 
-//    @Test
-//    void count() {
-//        assertEquals(4, day7.count(day7.createDataStructure(input), "shiny gold"));
-//    }
-//
-//    @Test
-//    void getNumberOfBags() {
-//        assertEquals(32, day7.getNumberOfBags(day7.createDataStructure(input), "shiny gold") - 1);
-//        assertEquals(126, day7.getNumberOfBags(day7.createDataStructure(input2), "shiny gold") - 1);
-//    }
+    @Test
+    void getNumberOfBags() {
+        assertEquals(32, day7.getNumberOfBags("shiny gold") - 1);
+        day7.setBags(day7.createDataStructure(input2));
+        assertEquals(126, day7.getNumberOfBags("shiny gold") - 1);
+    }
 
 }
