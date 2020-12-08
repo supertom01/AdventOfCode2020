@@ -1,5 +1,6 @@
-package day8;
+package test;
 
+import day8.Day8;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Reader;
