@@ -1,5 +1,7 @@
 package day1;
 
+import util.Reader;
+
 import java.io.FileNotFoundException;
 
 /**
@@ -18,7 +20,7 @@ public class Day1_2 {
 
     static {
         try {
-            input = util.Reader.ReadInt("C:/Users/meule/IdeaProjects/adventOfCode2020/src/day1/input.txt");
+            input = Reader.ReadInt("C:/Users/meule/IdeaProjects/adventOfCode2020/src/day1/input.txt");
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
